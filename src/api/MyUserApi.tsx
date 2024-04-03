@@ -1,7 +1,9 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import { useMutation } from "react-query";
+import { toast } from "sonner";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+// create a custom hook using react-query library and use it to manage api query.
 
 //this is the type of request body required for this endpoint.
 type CreateUserRequest = {
@@ -43,5 +45,60 @@ export const useCreateMyUser = () => {
     isLoading,
     isError,
     isSuccess,
+  };
+};
+
+//update user custom hook
+
+type UpdateMyUserRequest = {
+  name: string;
+  addressLine1: string;
+  city: string;
+  country: string;
+};
+
+export const useUpdateMyUser = () => {
+  const { getAccessTokenSilently } = useAuth0(); // this access token will be validated by the backend.
+  const useUpdateMyUserRequest = async (formData: UpdateMyUserRequest) => {
+    const accessToken = await getAccessTokenSilently(); // this access token will be used by the backend api to validate and retrive auth0id.
+
+    const response = await fetch(`${API_BASE_URL}/api/my/user`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
+
+    if (!response.ok) {
+      throw new Error("failed to update user");
+    }
+
+    return response.json();
+  };
+
+  const {
+    mutateAsync: updateUser,
+    isLoading,
+    isSuccess,
+    error,
+    reset,
+  } = useMutation(useUpdateMyUserRequest);
+
+
+  //conditionally showing toast message directly from the hook.
+  if (isSuccess) {
+    toast.success("user profile updated");
+  }
+
+  if (error) {
+    toast.error(error.toString());
+    reset(); // reset will clear the error state when re-render.
+  }
+
+  return {
+    updateUser,
+    isLoading,
   };
 };
