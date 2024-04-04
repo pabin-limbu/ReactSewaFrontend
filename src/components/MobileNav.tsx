@@ -5,11 +5,13 @@ import {
   SheetDescription,
   SheetTitle,
   SheetTrigger,
+  SheetClose,
 } from "./ui/sheet";
 import { Separator } from "./ui/separator";
 import { Button } from "./ui/button";
 import { useAuth0 } from "@auth0/auth0-react";
 import MobileNavLinks from "./MobileNavLinks";
+
 
 function MobileNav() {
   const { isAuthenticated, loginWithRedirect, user } = useAuth0();
@@ -33,7 +35,11 @@ function MobileNav() {
         <Separator />
         <SheetDescription className="flex flex-col gap-4">
           {isAuthenticated ? (
-            <MobileNavLinks></MobileNavLinks>
+            <SheetClose asChild>
+              {/* <Button>Save changes</Button> */}
+              {/* <Link to={"/user-profile"}>abc</Link> */}
+              <MobileNavLinks></MobileNavLinks>
+            </SheetClose>
           ) : (
             <Button
               onClick={async () => await loginWithRedirect()}

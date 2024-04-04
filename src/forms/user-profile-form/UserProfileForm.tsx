@@ -10,7 +10,9 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { User } from "@/type";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -19,7 +21,7 @@ const formSchema = z.object({
   name: z.string().min(1, "name is required").max(20),
   addressLine1: z.string().min(1, "Address Line 1 is required").max(100),
   city: z.string().min(1, "city is required").max(20),
-  country: z.string().min(1, "country is required").max(20  ),
+  country: z.string().min(1, "country is required").max(20),
 });
 
 type UserFormData = z.infer<typeof formSchema>; // zod will automatically determine the type automatically based on schemma so we dont have to write it manually.
@@ -27,18 +29,19 @@ type UserFormData = z.infer<typeof formSchema>; // zod will automatically determ
 type Props = {
   onSave: (userProfileData: UserFormData) => void; //not returning anything so void.
   isLoading: boolean;
+  currentUser: User;
 };
 
-const UserProfileForm = ({ onSave, isLoading }: Props) => {
+const UserProfileForm = ({ onSave, isLoading, currentUser }: Props) => {
   const form = useForm<UserFormData>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      name: "",
-      addressLine1: "",
-      city: "",
-      country: "",
-    },
+    defaultValues: currentUser,
   });
+
+  useEffect(() => {
+    form.reset(currentUser); //if the component rerender and component changes, call form reset function and re-render based on current data.
+    // this functionality is not from a normal form but from a useForm hook.
+  }, [currentUser, form]);
 
   return (
     <Form {...form}>
@@ -47,7 +50,7 @@ const UserProfileForm = ({ onSave, isLoading }: Props) => {
         className="space-y-4 bg-grey-50 rounded-md md:p-10"
       >
         <div className="">
-          <h2 className="text-2xl font-bold">User profile form</h2>
+          <h2 className="text-2xl font-bold">User profile form </h2>
           <FormDescription>
             View and Change Profile information here.
           </FormDescription>

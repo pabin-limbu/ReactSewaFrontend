@@ -1,5 +1,6 @@
+import { User } from "@/type";
 import { useAuth0 } from "@auth0/auth0-react";
-import { useMutation } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import { toast } from "sonner";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
@@ -86,7 +87,6 @@ export const useUpdateMyUser = () => {
     reset,
   } = useMutation(useUpdateMyUserRequest);
 
-
   //conditionally showing toast message directly from the hook.
   if (isSuccess) {
     toast.success("user profile updated");
@@ -99,6 +99,44 @@ export const useUpdateMyUser = () => {
 
   return {
     updateUser,
+    isLoading,
+  };
+};
+
+export const useGetMyUser = () => {
+  const { getAccessTokenSilently } = useAuth0(); // useAuth hook has accesstoken.
+
+  //create a request to get User.
+  const getMyUserRequest = async (): Promise<User> => { // here we are defining the type of return object.
+    const accessToken = await getAccessTokenSilently(); //This access token will be sent to Backend , backend will validate and decode this token to get auth0Id.
+
+    const response = await fetch(`${API_BASE_URL}/api/my/user`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("failed to update user");
+    }
+
+    return response.json();
+  };
+
+  const {
+    data: currentUser,
+    isLoading,
+    error,
+  } = useQuery("fetchCurrentUser", getMyUserRequest); // while fetching something we use useQuery hook when making some changes we use useMutate hook.
+
+  if (error) {
+    toast.error(error.toString());
+  }
+
+  return {
+    currentUser,
     isLoading,
   };
 };
