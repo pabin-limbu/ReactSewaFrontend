@@ -3,7 +3,7 @@ import Layout from "./layouts/layout";
 import HomePage from "./pages/HomePage";
 import AuthCallbackPage from "./pages/AuthCallbackPage";
 import UserProfilePage from "./pages/UserProfilePage";
-import TestPage from "./pages/TestPage";
+
 import ProtectedRoute from "./auth/ProtectedRoute";
 
 const AppRoutes = () => {
@@ -29,15 +29,6 @@ const AppRoutes = () => {
           }
         />
       </Route>
-
-      <Route
-        path="/test"
-        element={
-          <Layout>
-            <TestPage />
-          </Layout>
-        }
-      />
 
       <Route path="*" element={<Navigate to="/" />} />
     </Routes>
