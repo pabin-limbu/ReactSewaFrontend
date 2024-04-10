@@ -76,17 +76,17 @@ function ManageRestaurantForm({ onSave, isLoading, restaurant }: Props) {
     }
 
     // because the data fetched from the api is in string format.we have to change it to js object.
-    const deliceryPriceFormatted = parseInt(
+    const deliveryPriceFormatted = parseInt(
       (restaurant.deliveryPrice / 100).toFixed(2)
     ); // since amount is saved in lowest deneminator.
 
     const menuItemsFormatted = restaurant.menuItems.map((item) => {
-      return { ...item, price: parseInt(item.price.toFixed(2)) };
+      return { ...item, price: parseInt((item.price / 100).toFixed(2)) };
     });
 
     const updatedRestaurant = {
       ...restaurant,
-      deliveryPrice: deliceryPriceFormatted,
+      deliveryPrice: deliveryPriceFormatted,
       menuItems: menuItemsFormatted,
     };
 
