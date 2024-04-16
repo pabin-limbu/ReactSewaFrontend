@@ -1,13 +1,24 @@
 import landing from "../assets/hero-two.jpg";
 import appDownloadImage from "../assets/appDownload.png";
-function homePage() {
+import SearchBar, { SearchForm } from "@/components/SearchBar";
+import { useNavigate } from "react-router-dom";
+
+function HomePage() {
+  const navigate = useNavigate();
+  const handleSearchSubmit = (searchFormValues: SearchForm) => {
+    navigate({
+      pathname: `/search/${searchFormValues.searchQuery}`,
+    });
+  };
+
   return (
     <div className="flex flex-col gap-12">
-      <div className="bg-white rounded-md shadow-md py-8 flex flex-col gap-5 text-center -mt-16">
+      <div className="md:px-32 bg-white rounded-md shadow-md py-8 flex flex-col gap-5 text-center -mt-16">
         <h1 className="text-5xl font-bold tracking-tight text-orange-600">
           Your only Sewa Takeaway.
         </h1>
         <span className="text-xl">Food is in your hand</span>
+        <SearchBar placeHolder="search by city" onSubmit={handleSearchSubmit} />
       </div>
       <div className="grid md:grid-cols-2 gap-5">
         <img src={landing} alt="hero image" />
@@ -24,4 +35,4 @@ function homePage() {
   );
 }
 
-export default homePage;
+export default HomePage;

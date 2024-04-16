@@ -107,7 +107,8 @@ export const useGetMyUser = () => {
   const { getAccessTokenSilently } = useAuth0(); // useAuth hook has accesstoken.
 
   //create a request to get User.
-  const getMyUserRequest = async (): Promise<User> => { // here we are defining the type of return object.
+  const getMyUserRequest = async (): Promise<User> => {
+    // here we are defining the type of return object.
     const accessToken = await getAccessTokenSilently(); //This access token will be sent to Backend , backend will validate and decode this token to get auth0Id.
 
     const response = await fetch(`${API_BASE_URL}/api/my/user`, {
