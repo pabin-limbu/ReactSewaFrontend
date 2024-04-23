@@ -24,15 +24,23 @@ const formSchema = z.object({
   country: z.string().min(1, "country is required").max(20),
 });
 
-type UserFormData = z.infer<typeof formSchema>; // zod will automatically determine the type automatically based on schemma so we dont have to write it manually.
+export type UserFormData = z.infer<typeof formSchema>; // zod will automatically determine the type automatically based on schemma so we dont have to write it manually.
 
 type Props = {
   onSave: (userProfileData: UserFormData) => void; //not returning anything so void.
   isLoading: boolean;
   currentUser: User;
+  title?: string;
+  buttonText?: string;
 };
 
-const UserProfileForm = ({ onSave, isLoading, currentUser }: Props) => {
+const UserProfileForm = ({
+  onSave,
+  isLoading,
+  currentUser,
+  title = "User Profile",
+  buttonText = "Submit",
+}: Props) => {
   const form = useForm<UserFormData>({
     resolver: zodResolver(formSchema),
     defaultValues: currentUser,
@@ -50,7 +58,7 @@ const UserProfileForm = ({ onSave, isLoading, currentUser }: Props) => {
         className="space-y-4 bg-grey-50 rounded-md md:p-10"
       >
         <div className="">
-          <h2 className="text-2xl font-bold">User profile form </h2>
+          <h2 className="text-2xl font-bold">{title} </h2>
           <FormDescription>
             View and Change Profile information here.
           </FormDescription>
@@ -127,7 +135,7 @@ const UserProfileForm = ({ onSave, isLoading, currentUser }: Props) => {
           <LoadingButton />
         ) : (
           <Button type="submit" className="bg-orange-500">
-            Submit
+            {buttonText}
           </Button>
         )}
       </form>
