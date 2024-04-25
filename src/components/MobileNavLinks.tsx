@@ -15,6 +15,12 @@ function MobileNavLinks() {
           user profile
         </Link>
       </SheetClose>
+      <Link
+        to={"/order-status"}
+        className="flex bg-white items-center font-bold hover:text-orange-500"
+      >
+        Order status
+      </Link>
 
       <Button
         onClick={() => logout()}
