@@ -18,7 +18,9 @@ function ManageRestaurantPage() {
   const { orders, isLoading: isOrderLoading } = useGetMyRestaurantOredrs();
 
   const isEditing = !!restaurant; //truthy value
-  console.log(isEditing);
+
+  if (isOrderLoading) return "...loading";
+
   return (
     <Tabs defaultValue="orders">
       <TabsList>
