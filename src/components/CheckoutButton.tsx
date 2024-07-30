@@ -36,12 +36,12 @@ function CheckoutButton({ onCheckout, disabled, isLoading }: Props) {
 
   if (!isAuthenticated) {
     return (
-      <Button onClick={onLogin} className="bg-orange-500 flex-1">
+      <Button onClick={onLogin} className="bg-myPrimary flex-1">
         Login to checkout
       </Button>
     );
   }
-  
+
   if (isAuthLoading || !currentUser || isLoading) {
     return <LoadingButton />;
   }

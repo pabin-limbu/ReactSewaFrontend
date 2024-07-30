@@ -37,7 +37,7 @@ function DetailPage() {
       );
 
       let updatedCartItems;
-      //2.if ite in cart update quantity
+      //2.if item in cart update quantity
       if (existingCartItem) {
         updatedCartItems = prevState.map((cartItem) =>
           cartItem._id === menuItem._id
@@ -82,8 +82,6 @@ function DetailPage() {
   };
 
   const onCheckOut = async (userFormData: UserFormData) => {
-    console.log("userFormData", userFormData);
-
     if (!restaurant) return;
 
     //call create checkout session.
@@ -132,6 +130,7 @@ function DetailPage() {
               <MenuItemCard
                 addToCart={() => addToCart(menuItem)}
                 menuItem={menuItem}
+                key={menuItem._id}
               />
             );
           })}

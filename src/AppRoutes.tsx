@@ -16,7 +16,7 @@ const AppRoutes = () => {
       <Route
         path="/"
         element={
-          <Layout showHero>
+          <Layout>
             <HomePage />
           </Layout>
         }
